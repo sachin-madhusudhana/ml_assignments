@@ -1,3 +1,3 @@
 # ml_assignments
 
-Changed nothing
+Two codes related to KNN added
