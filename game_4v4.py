@@ -1,6 +1,7 @@
 import itertools
 import numpy as np
 import sys
+import math
 
 
 # Take only column as input if the number below is still zero then
@@ -75,52 +76,34 @@ def win(board, players, won):
     # Diagonal
     counter1 = 0
     counter2 = 0
-    for j in range(len(board[0])):
-        if board[j][j] == players[0]:
-            counter1 = counter1 + 1
-            if counter1 == 4:
-                print(f'{players[0]} is the winner')
-                won = True
-                return won
+    diags = [board[::-1, :].diagonal(i) for i in range(-board.shape[0] + 1, board.shape[1])]
+    diags.extend(board.diagonal(i) for i in range(board.shape[1] - 1, -board.shape[0], -1))
+
+    for i in range(len(diags)):
+        if len(diags[i]) >= 4:
+            diags_elements = diags[i]
+            for j in range(len(diags_elements)):
+                if diags_elements[j] == players[0]:
+                    counter1 = counter1 + 1
+                    if counter1 == 4:
+                        print(f'{players[0]} is the winner')
+                        won = True
+                        return won
+                else:
+                    counter1 = 0
+                    won = False
+
+                if diags_elements[j] == players[1]:
+                    counter2 = counter2 + 1
+                    if counter2 == 4:
+                        print(f'{players[1]} is the winner')
+                        won = True
+                        return won
+                else:
+                    counter2 = 0
+                    won = False
         else:
-            counter1 = 0
-            won = False
-
-        if board[j][j] == players[1]:
-            counter2 = counter2 + 1
-            if counter2 == 4:
-                print(f'{players[1]} is the winner')
-                won = True
-                return won
-        else:
-            counter2 = 0
-            won = False
-
-    for i in range(len(board[0])):
-        i += 1
-        counter1 = 0
-        counter2 = 0
-        for j in range(len(board[0])-1):
-            if board[j][i] == players[0]:
-                counter1 = counter1 + 1
-                if counter1 == 4:
-                    print(f'{players[0]} is the winner')
-                    won = True
-                    return won
-            else:
-                counter1 = 0
-                won = False
-
-            if board[j][i] == players[1]:
-                counter2 = counter2 + 1
-                if counter2 == 4:
-                    print(f'{players[1]} is the winner')
-                    won = True
-                    return won
-            else:
-                counter2 = 0
-                won = False
-            i += 1
+            pass
     return won
 
 
